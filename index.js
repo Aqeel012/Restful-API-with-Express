@@ -1,39 +1,45 @@
-const express = require("express");
-const app = express();
+const express=require("express");
+const app=express();
 app.use(express.json());
-const products = ["Laptop", "LCD", "Mobile"];
 
-app.get("/", function (req, res) {
-  res.send("Hello World");
-});
-
-
-//first parameter is url
-//second is a function with two inputs one is request and one is response
-app.get("/api/products", function (req, res) {
-  res.send(products);
-});
-//get one resource
-app.get("/api/products/:index", function (req, res) {
-  if (!products[req.params.index])
-    return res.status(400).send("Product not found");
-  res.send(products[req.params.index]);
-});
-//update one resource with id e.g. index
-app.put("/api/products/:index", function (req, res) {
-  //   console.log(req.body);
-  products[req.params.index] = req.body.name;
-  res.send(products[req.params.index]);
-});
-//delete one resource
-app.delete("/api/products/:index", function (req, res) {
-  products.splice(req.params.index, 1);
-  res.send(products);
-});
-//create one resource
-app.post("/api/products", function (req, res) {
-  products.push(req.body.name);
-  res.send(products);
+const countries = ["India","China","United States","Indonesia","Pakistan","Nigeria","Brazil","Bangladesh","Russia","Mexico"];
+ 
+app.get("/",function(req,res){
+  res.send("<h1> Welcome </h1>");
 });
 
-app.listen(3000);
+app.get("/countries", function (req, res) {
+  res.send(countries); 
+});
+
+app.get("/countries/:index",function(req,res){
+    if(!countries[req.params.index])
+    return res.status(400).send("Bad Request");
+
+    res.send(countries[req.params.index]);
+});
+
+app.put("/countries/:index",function(req,res){
+  if(countries[req.params.index])
+  {
+    countries[req.params.index]=req.body.name;
+    res.send(countries);
+  
+  }
+  else
+  res.status(400).send("Bad Request");
+})
+
+app.post("/countries",function(req,res){
+  countries.push(req.body.name);
+  res.send(countries);
+})
+
+app.delete("/countries/:index",function(req,res){
+  countries.splice(req.params.index,1);
+  res.send(countries);
+})
+
+
+app.listen(8080);
+
